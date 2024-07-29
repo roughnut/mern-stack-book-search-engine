@@ -3,7 +3,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
-import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
@@ -26,8 +25,6 @@ const SavedBooks = () => {
       if (error) {
         throw new Error('something went wrong!');
       }
-
-      removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
