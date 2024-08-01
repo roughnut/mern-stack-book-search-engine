@@ -23,6 +23,11 @@ app.use(express.json());
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/dist")));
+
+  // Add a catch-all route to serve index.html for any unmatched routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
 }
 
 const startApolloServer = async () => {
