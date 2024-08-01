@@ -6,15 +6,17 @@ Challenge is to refactor a Google Books API search engine built with a RESTful A
 
 [User Story](#user-story) and [Acceptance Criteria](#acceptance-criteria) are below.
 
-Also included below is my [Process & Learnings](#process--learnings) section.
-
 ## Screenshot
 
-![screenshot](path_to_screenshot "link to screenshot")
+![Render deployment screenshot](./assets/app-screenshot.png "link to app screenshot")
 
 ## Usage
 
-[Github Pages URL](github_pages_url "link to deployed site")
+[Deployed URL on Render](https://mern-stack-book-search-engine.onrender.com/ "link to deployed site")
+
+## GitHub Repo
+
+[GitHub repo URL](https://github.com/roughnut/mern-stack-book-search-engine "link to gitHub repo")
 
 ## User Story
 
@@ -57,5 +59,3 @@ THEN that book is deleted from my saved books list
 WHEN I click on the Logout button
 THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
 ```
-
-## Process & Learnings

@@ -1,16 +1,21 @@
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+// import query and mutation hooks
 import { useQuery, useMutation } from '@apollo/client';
+// import constants for queries and mutations
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const SavedBooks = () => {
+  // get user data to check for saved books
   const { loading, data } = useQuery(GET_ME);
+  // remove book mutation hook
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || {};
 
   const handleDeleteBook = async (bookId) => {
+    // check user is logged in before removing book
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -18,6 +23,7 @@ const SavedBooks = () => {
     }
 
     try {
+      // call removeBook mutation
       await removeBook({
         variables: { bookId },
       });
@@ -34,6 +40,7 @@ const SavedBooks = () => {
     return <h2>LOADING...</h2>;
   }
 
+  // userData from GET_ME query used to render saved books to the /saved path
   return (
     <>
       <div className="text-light bg-dark p-5">

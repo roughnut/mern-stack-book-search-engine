@@ -1,9 +1,11 @@
+// import JWT package
 const jwt = require("jsonwebtoken");
 
 const secret = "mysecretsshhhhh";
 const expiration = "2h";
 
 module.exports = {
+  // get token from req object, verify token, add user data to req object
   authMiddleware: function ({ req }) {
     let token = req.body.token || req.query.token || req.headers.authorization;
     

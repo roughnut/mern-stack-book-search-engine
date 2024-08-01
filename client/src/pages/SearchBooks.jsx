@@ -8,9 +8,12 @@ import {
   Row
 } from 'react-bootstrap';
 
+// leave google books API call in place
 import { searchGoogleBooks } from '../utils/API';
 import Auth from '../utils/auth';
+// import apollo query and mutation hooks
 import { useMutation, useQuery } from '@apollo/client';
+// import constants for queries and mutations
 import { SAVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
@@ -18,10 +21,14 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
 
+  // SAVE_BOOK mutation hook to save a book
   const [saveBook, { error }] = useMutation(SAVE_BOOK, {
+    // refetch updates the user profile with the new saved book
     refetchQueries: [{ query: GET_ME }]
   });
-  const { data, refetch } = useQuery(GET_ME);
+
+  // get user data
+  const { data } = useQuery(GET_ME);
 
   const userData = data?.me || {};
 
@@ -33,6 +40,7 @@ const SearchBooks = () => {
     }
 
     try {
+      // call Google Books API
       const response = await searchGoogleBooks(searchInput);
 
       if (!response.ok) {
@@ -41,6 +49,7 @@ const SearchBooks = () => {
 
       const { items } = await response.json();
 
+      // map book data
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
@@ -49,13 +58,16 @@ const SearchBooks = () => {
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
+      // update state with book list data
       setSearchedBooks(bookData);
+      // clear form
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
 
+  // function to save a book to the user's profile when the Save book button is clicked
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -73,8 +85,6 @@ const SearchBooks = () => {
         throw new Error('something went wrong!');
       }
 
-      // Refetch the GET_ME query to update the user's saved books
-      refetch();
     } catch (err) {
       console.error(err);
     }

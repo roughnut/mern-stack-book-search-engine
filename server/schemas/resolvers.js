@@ -1,5 +1,8 @@
+// import graphQLError - note this is a built in class in more recent graphql versions so AuthenicationError is not needed from /utils/auth
 const { GraphQLError } = require("graphql");
+// import User model
 const { User } = require("../models");
+// import signToken function
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
