@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+const gql = require("graphql-tag");
 
 // define GraphQL schema using gql template literal parser
 const typeDefs = gql`

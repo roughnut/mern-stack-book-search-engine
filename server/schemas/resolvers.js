@@ -1,4 +1,4 @@
-const { AuthenticationError } = require("apollo-server-express");
+const { GraphQLError } = require("graphql");
 const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
@@ -18,7 +18,9 @@ const resolvers = {
         return userData;
       }
       // else throw auth error
-      throw new AuthenticationError("User not found");
+      throw new GraphQLError("User not found", {
+        extensions: { code: "UNAUTHENTICATED" },
+      });
     },
   },
 
@@ -34,13 +36,17 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError("Could not log in");
+        throw new GraphQLError("Could not log in", {
+          extensions: { code: "UNAUTHENTICATED" },
+        });
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Could not log in");
+        throw new GraphQLError("Could not log in", {
+          extensions: { code: "UNAUTHENTICATED" },
+        });
       }
       // assign JWT token to user
       const token = signToken(user);
@@ -56,7 +62,9 @@ const resolvers = {
         );
         return updatedUser;
       }
-      throw new AuthenticationError("You need to be logged in!");
+      throw new GraphQLError("You need to be logged in!", {
+        extensions: { code: "UNAUTHENTICATED" },
+      });
     },
     // allow user to remove a persisted book from their profile
     removeBook: async (parent, { bookId }, context) => {
@@ -68,7 +76,9 @@ const resolvers = {
         );
         return updatedUser;
       }
-      throw new AuthenticationError("You need to be logged in!");
+      throw new GraphQLError("You need to be logged in!", {
+        extensions: { code: "UNAUTHENTICATED" },
+      });
     },
   },
 };
